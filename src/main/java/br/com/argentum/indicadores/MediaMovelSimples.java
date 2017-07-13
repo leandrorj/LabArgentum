@@ -4,6 +4,15 @@ import br.com.argentum.modelo.SerieTemporal;
 
 public class MediaMovelSimples implements Indicador {
 
+	private Indicador outroIndicador = new IndicadorFechamento();
+
+	public MediaMovelSimples() {
+
+	}
+
+	public MediaMovelSimples(Indicador outroIndicador) {
+		this.outroIndicador = outroIndicador;
+	}
 
 	@Override
 	public double calcula(int posicao, SerieTemporal serie) {
@@ -11,16 +20,15 @@ public class MediaMovelSimples implements Indicador {
 		double soma = 0;
 
 		for (int i = posicao; i > posicao - 3; i--) {
-			soma += serie.getCandle(i).getFechamento();
+			soma += outroIndicador.calcula(i, serie);
 		}
 
-		return soma/3;
+		return soma / 3;
 	}
-	
+
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "MMS - Fechamento";
+		return "MMS de" + outroIndicador.toString();
 	}
 
 }
